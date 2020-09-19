@@ -1,10 +1,10 @@
 import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/has_game_ref.dart';
 import 'package:flame/components/mixins/tapable.dart';
-import 'package:flame/game/base_game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/rendering.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  MyGame game;
+  BaseGame game;
 
   @override
   void initState() {
@@ -43,13 +43,19 @@ class BuildingSprite extends SpriteComponent with Tapable {
 
   @override
   void onTapDown(TapDownDetails details) {
+    // TODO: tap up instead of tap down
+    toggleInfoSheet();
     print(
         'Component tap down on ${details.globalPosition.dx}  ${details.globalPosition.dy}');
   }
+
+  void toggleInfoSheet() {}
 }
 
 class MyGame extends BaseGame with HasTapableComponents {
   MyGame() {
+    TiledComponent tiledMap = TiledComponent('IsoMap.tmx', Size(30.0, 30.0));
+    add(tiledMap);
     add(BuildingSprite());
   }
 }
