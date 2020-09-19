@@ -1,11 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:flame/components/component.dart';
-import 'package:flame/components/mixins/tapable.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame/widgets/sprite_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:loci/src/components/buttons.dart';
 import 'package:loci/src/pages/call.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -29,17 +25,21 @@ class _MapPageState extends State<MapPage> {
         appBar: AppBar(
           title: Text('hello'),
         ),
+        backgroundColor: Colors.black,
         body: InteractiveViewer(
             constrained: false,
-            child: SizedBox(
+            child: Container(
               height: 1000,
               width: 1000,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/IsoMap.jpg'))),
               child: Stack(
                 children: [
-                  BuildingSprite(x: 50, y: 50),
+                  BuildingSprite(x: 500, y: 500),
                   BuildingSprite(
-                    x: 100,
-                    y: 200,
+                    x: 550,
+                    y: 600,
                     name: 'ECEB',
                   )
                 ],
@@ -166,11 +166,7 @@ class _BuildingSpriteState extends State<BuildingSprite> {
             child: OutlineButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
-                onPressed: () {
-                  setModalState(() {
-                    favorited = !favorited;
-                  });
-                },
+                onPressed: () {},
                 color: Colors.blue,
                 disabledBorderColor: Colors.blue,
                 highlightedBorderColor: Colors.blue,
