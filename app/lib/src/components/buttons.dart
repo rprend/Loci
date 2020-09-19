@@ -13,7 +13,7 @@ class LoginButton extends StatelessWidget {
         padding:
             EdgeInsets.only(left: 32.0, top: 8.0, bottom: 8.0, right: 16.0),
         onPressed: onPressed,
-        color: Colors.black87,
+        color: Colors.deepPurple[800],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

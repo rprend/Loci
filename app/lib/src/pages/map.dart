@@ -1,10 +1,13 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/components/mixins/tapable.dart';
 import 'package:flame/sprite.dart';
+import 'package:flame/widgets/sprite_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
-import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/rendering.dart';
+import 'package:loci/src/components/buttons.dart';
+import 'package:loci/src/pages/call.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -12,12 +15,12 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  BaseGame game;
-
+  BuildingSprite sprite;
   @override
   void initState() {
     super.initState();
-    game = MyGame();
+
+    sprite = BuildingSprite();
   }
 
   @override
@@ -26,36 +29,226 @@ class _MapPageState extends State<MapPage> {
         appBar: AppBar(
           title: Text('hello'),
         ),
-        body: InteractiveViewer(child: game.widget));
+        body: InteractiveViewer(
+            constrained: false,
+            child: SizedBox(
+              height: 1000,
+              width: 1000,
+              child: Stack(
+                children: [
+                  BuildingSprite(x: 50, y: 50),
+                  BuildingSprite(
+                    x: 100,
+                    y: 200,
+                    name: 'ECEB',
+                  )
+                ],
+              ),
+            )));
   }
 }
 
-class BuildingSprite extends SpriteComponent with Tapable {
-  // creates a component that renders the crate.png sprite, with size 16 x 16
-  BuildingSprite() : super.fromSprite(64.0, 64.0, new Sprite('building.png'));
+class BuildingSprite extends StatefulWidget {
+  final double x;
+  final double y;
+  final String spritePath;
+  final String name;
+  final String description;
+  final int capacity;
+
+  BuildingSprite(
+      {Key key,
+      this.x,
+      this.y,
+      this.spritePath = 'building.png',
+      this.name = 'Siebel Center for Computer Science',
+      this.capacity = 8,
+      this.description =
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'});
 
   @override
-  void resize(Size size) {
-    // we don't need to set the x and y in the constructor, we can set then here
-    this.x = (size.width - this.width) / 2;
-    this.y = (size.height - this.height) / 2;
-  }
-
-  @override
-  void onTapDown(TapDownDetails details) {
-    // TODO: tap up instead of tap down
-    toggleInfoSheet();
-    print(
-        'Component tap down on ${details.globalPosition.dx}  ${details.globalPosition.dy}');
-  }
-
-  void toggleInfoSheet() {}
+  _BuildingSpriteState createState() => _BuildingSpriteState();
 }
 
-class MyGame extends BaseGame with HasTapableComponents {
-  MyGame() {
-    TiledComponent tiledMap = TiledComponent('IsoMap.tmx', Size(30.0, 30.0));
-    add(tiledMap);
-    add(BuildingSprite());
+class _BuildingSpriteState extends State<BuildingSprite> {
+  Sprite sprite;
+  bool favorited = false;
+  @override
+  void initState() {
+    super.initState();
+    sprite = Sprite(widget.spritePath);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+        top: widget.y,
+        left: widget.x,
+        child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                  barrierColor: Colors.black12,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(builder:
+                        (BuildContext context, StateSetter setModalState) {
+                      return Container(
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        height: 250,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildBuildingInfo(),
+                            Spacer(),
+                            buildButtonBar(setModalState)
+                          ],
+                        ),
+                      );
+                    });
+                  });
+            },
+            child: Image.asset('assets/images/${widget.spritePath}')));
+  }
+
+  Widget buildButtonBar(StateSetter setModalState) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                onPressed: () {
+                  onJoin(widget.name);
+                },
+                color: Colors.blue,
+                child: Text(
+                  'Join Room',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: OutlineButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                onPressed: () {
+                  setModalState(() {
+                    favorited = !favorited;
+                  });
+                },
+                color: Colors.blue,
+                disabledBorderColor: Colors.blue,
+                highlightedBorderColor: Colors.blue,
+                child: Row(
+                  children: [
+                    favorited
+                        ? Icon(Icons.bookmark, color: Colors.red)
+                        : Icon(Icons.bookmark_border, color: Colors.blue),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Bookmark',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
+                  ],
+                )),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: OutlineButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                onPressed: () {
+                  setModalState(() {
+                    favorited = !favorited;
+                  });
+                },
+                color: Colors.blue,
+                disabledBorderColor: Colors.blue,
+                highlightedBorderColor: Colors.blue,
+                child: Row(
+                  children: [
+                    Icon(Icons.share, color: Colors.blue),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Share',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
+                  ],
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildBuildingInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(fontSize: 20),
+              ),
+              Chip(
+                avatar: Icon(
+                  Icons.person,
+                  color: Colors.blue,
+                ),
+                backgroundColor: Colors.white10,
+                label: Text(
+                  "0/${widget.capacity}",
+                ),
+              ),
+              Text(
+                widget.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          ),
+        ),
+        Image.asset('assets/images/${widget.spritePath}'),
+      ]),
+    );
+  }
+
+  Future<void> onJoin(String channelName) async {
+    if (channelName.isNotEmpty) {
+      // await for camera and mic permissions before pushing video page
+      await _handleCameraAndMic();
+      // push video page with given channel name
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CallPage(
+            channelName: channelName,
+            role: ClientRole.Broadcaster,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
   }
 }

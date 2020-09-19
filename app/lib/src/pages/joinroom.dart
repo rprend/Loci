@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loci/src/components/buttons.dart';
 
-import 'dart:async';
-
 class JoinRoomPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
