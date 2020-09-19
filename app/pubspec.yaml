@@ -23,6 +23,7 @@ dependencies:
   flame: ^0.26.0
   flame_tiled: ^0.1.0
   permission_handler: ^3.0.0
+  image_picker: ^0.6.7+9
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +42,7 @@ flutter:
   assets:
     - assets/images/
     - assets/tiles/
+    - assets/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

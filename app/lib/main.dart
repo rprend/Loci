@@ -1,4 +1,6 @@
+import 'package:loci/src/pages/camera.dart';
 import 'package:loci/src/pages/edit.dart';
+import 'package:loci/src/pages/joinroom.dart';
 import 'package:loci/src/pages/login.dart';
 import 'package:loci/src/pages/map.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +18,13 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        initialRoute: '/map',
+        initialRoute: '/',
         routes: {
-          '/': (context) => IndexPage(),
+          '/': (context) => LoginPage(),
+          '/joinroom': (context) => JoinRoomPage(),
+          '/camera': (context) => CameraPage(),
+          '/index': (context) => IndexPage(),
           '/map': (context) => MapPage(),
-          '/login': (context) => LoginPage(),
           '/edit': (context) => EditPage(),
         });
   }
