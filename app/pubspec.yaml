@@ -24,6 +24,7 @@ dependencies:
   flame_tiled: ^0.1.0
   permission_handler: ^3.0.0
   image_picker: ^0.6.7+9
+  tcard: ^1.2.2
 
 dev_dependencies:
   flutter_test:

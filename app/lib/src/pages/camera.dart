@@ -24,60 +24,47 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0x44000000),
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-        // body: Center(
-        //   child: _image == null ? Text('No image selected.') : Image.file(_image),
-        // ),
-        body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/town.jpg'))),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'Create your map',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w200),
-                ),
-                Spacer(flex: 2),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: new OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(10.0),
-                          ),
+    return Container(
+        padding: EdgeInsets.all(16),
+        margin: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/town.jpg'))),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Create your map',
+              style: TextStyle(fontSize: 40, color: Colors.white),
+            ),
+            Spacer(flex: 2),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white),
+                child: TextField(
+                  decoration: InputDecoration(
+                      border: new OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(10.0),
                         ),
-                        focusColor: Colors.black,
-                        hintText: 'Map name'),
-                  ),
+                      ),
+                      focusColor: Colors.black,
+                      hintText: 'Map name'),
                 ),
-                Spacer(flex: 4),
-                LoginButton(
-                  text: 'Take picture',
-                  onPressed: getImage,
-                ),
-                SizedBox(
-                  height: 40,
-                )
-              ],
-            )));
+              ),
+            ),
+            LoginButton(
+              text: 'Take picture',
+              onPressed: getImage,
+            ),
+          ],
+        ));
   }
 }
