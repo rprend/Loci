@@ -1,8 +1,3 @@
-# 
-# Sources
-# https://stackoverflow.com/questions/39391080/extracting-hand-writing-text-out-in-shape-with-opencv
-# 
-
 import cv2
 import json
 
@@ -26,6 +21,4 @@ for i, c in zip(range(len(contours)), contours):
     cY = int(M["m01"] / M["m00"])
     buildings.append({'id': i, 'location': (cX, cY)})
 
-print(buildings)
-
-# cv2.imwrite('contours_img.png', im_bw) 
+return json.dumps(buildings)
