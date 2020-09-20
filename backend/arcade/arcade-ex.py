@@ -4,8 +4,8 @@ Platformer Game
 import arcade
 
 # Constants
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 650
+SCREEN_WIDTH = 1610
+SCREEN_HEIGHT = 850
 SCREEN_TITLE = "Render"
 
 # Constants used to scale our sprites from their original size
@@ -85,6 +85,8 @@ class MyGame(arcade.Window):
         # if self.my_map.backgroundcolor is None:
         #     arcade.set_background_color(arcade.color.BLACK)
 
+        arcade.set_viewport(75, 1685, 35, 885)
+
 
     def on_draw(self):
         """ Render the screen. """
@@ -95,7 +97,12 @@ class MyGame(arcade.Window):
         # Draw our sprites
         self.roads_list.draw()        
         self.trees_list.draw()        
-        self.buildings_list.draw()        
+        self.buildings_list.draw()
+
+        image = arcade.get_image()
+        image.save('screenshot.png', 'PNG') 
+
+        exit()
 
 
     def on_key_press(self, key, modifiers):
