@@ -6,11 +6,17 @@ import 'package:loci/src/pages/call.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 bool editMode = true;
+bool checkEditMode = false;
 
-class MapArguments {
-  final bool editable;
+class MapArguments with ChangeNotifier {
+  bool editable;
 
   MapArguments(this.editable);
+
+  void update(bool val) {
+    editable = val;
+    notifyListeners();
+  }
 }
 
 class MapPage extends StatefulWidget {
@@ -19,23 +25,57 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  BuildingSprite sprite;
+  List<BuildingSprite> sprites;
+
   @override
   void initState() {
     super.initState();
 
-    sprite = BuildingSprite();
+    checkEditMode = false;
+
+    sprites = [
+      BuildingSprite(x: 500, y: 500),
+      BuildingSprite(
+        x: 550,
+        y: 600,
+        name: 'ECEB',
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    final MapArguments args = ModalRoute.of(context).settings.arguments;
-    editMode = args != null ? args.editable : false;
-
+    if (!checkEditMode) {
+      final MapArguments args = ModalRoute.of(context).settings.arguments;
+      editMode = args != null ? args.editable : false;
+      checkEditMode = true;
+    }
     return Scaffold(
         appBar: AppBar(
-          title: Text('Map'),
+          title: editMode ? Text('Edit map') : Text('Explore'),
+          actions: [
+            editMode
+                ? IconButton(
+                    icon: Icon(Icons.done),
+                    onPressed: () {
+                      setState(() {
+                        editMode = false;
+                      });
+                    },
+                  )
+                : Container()
+          ],
         ),
+        floatingActionButton: editMode
+            ? FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    sprites.add(BuildingSprite(x: 500, y: 500));
+                  });
+                },
+                child: Icon(Icons.add),
+              )
+            : Container(),
         backgroundColor: Colors.black,
         body: InteractiveViewer(
             constrained: false,
@@ -46,14 +86,7 @@ class _MapPageState extends State<MapPage> {
                   image: DecorationImage(
                       image: AssetImage('assets/images/IsoMap.jpg'))),
               child: Stack(
-                children: [
-                  BuildingSprite(x: 500, y: 500),
-                  BuildingSprite(
-                    x: 550,
-                    y: 600,
-                    name: 'ECEB',
-                  )
-                ],
+                children: sprites,
               ),
             )));
   }
@@ -94,29 +127,37 @@ class _BuildingSpriteState extends State<BuildingSprite> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        top: widget.y,
-        left: widget.x,
-        child: InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                  isScrollControlled: true,
-                  barrierColor: Colors.black12,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return StatefulBuilder(builder:
-                        (BuildContext context, StateSetter setModalState) {
-                      return editMode
-                          ? buildEditSheet(setModalState)
-                          : buildInfoSheet(setModalState);
-                    });
+      top: widget.y,
+      left: widget.x,
+      child: GestureDetector(
+          onPanUpdate: (details) {
+            if (editMode) {
+              setState(() {
+                widget.x += details.delta.dx;
+                widget.y += details.delta.dy;
+              });
+            }
+          },
+          onTap: () {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                barrierColor: Colors.black12,
+                context: context,
+                builder: (BuildContext context) {
+                  return StatefulBuilder(builder:
+                      (BuildContext context, StateSetter setModalState) {
+                    return editMode
+                        ? buildEditSheet(setModalState)
+                        : buildInfoSheet(setModalState);
                   });
-            },
-            child: Image.asset('assets/images/${widget.spritePath}')));
+                });
+          },
+          child: Image.asset('assets/images/${widget.spritePath}')),
+    );
   }
 
   Container buildInfoSheet(StateSetter setModalState) {
     return Container(
-      padding: EdgeInsets.all(10.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
@@ -124,7 +165,10 @@ class _BuildingSpriteState extends State<BuildingSprite> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildBuildingInfo(),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: buildBuildingInfo(),
+          ),
           Spacer(),
           buildButtonBar(setModalState)
         ],
@@ -159,6 +203,7 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                     onPressed: () {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text('Saved ${widget.name}'),
+                        duration: Duration(milliseconds: 500),
                       ));
 
                       Navigator.pop(context);
@@ -191,10 +236,10 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                           ),
                           initialValue: widget.name,
                           maxLines: 2,
-                          onFieldSubmitted: (value) => {
+                          onChanged: (value) {
                             setState(() {
                               widget.name = value;
-                            })
+                            });
                           },
                         ),
                         Row(
@@ -244,10 +289,10 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                           ),
                           maxLines: 8,
                           initialValue: widget.description,
-                          onFieldSubmitted: (value) => {
+                          onChanged: (value) {
                             setState(() {
                               widget.description = value;
-                            })
+                            });
                           },
                         ),
                       ],
@@ -275,10 +320,18 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                 onPressed: () {
                   onJoin(widget.name);
                 },
-                color: Colors.blue,
-                child: Text(
-                  'Join Room',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                color: Colors.deepPurple,
+                child: Row(
+                  children: [
+                    Icon(Icons.videocam, color: Colors.white),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      'Join Room',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ],
                 )),
           ),
           Padding(
@@ -291,20 +344,20 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                     favorited = !favorited;
                   });
                 },
-                color: Colors.blue,
-                disabledBorderColor: Colors.blue,
-                highlightedBorderColor: Colors.blue,
+                color: Colors.deepPurple,
+                disabledBorderColor: Colors.deepPurple,
+                highlightedBorderColor: Colors.deepPurple,
                 child: Row(
                   children: [
                     favorited
                         ? Icon(Icons.bookmark, color: Colors.red)
-                        : Icon(Icons.bookmark_border, color: Colors.blue),
+                        : Icon(Icons.bookmark_border, color: Colors.deepPurple),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
                       'Bookmark',
-                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     ),
                   ],
                 )),
@@ -315,18 +368,18 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 onPressed: () {},
-                color: Colors.blue,
-                disabledBorderColor: Colors.blue,
-                highlightedBorderColor: Colors.blue,
+                color: Colors.deepPurple,
+                disabledBorderColor: Colors.deepPurple,
+                highlightedBorderColor: Colors.deepPurple,
                 child: Row(
                   children: [
-                    Icon(Icons.share, color: Colors.blue),
+                    Icon(Icons.share, color: Colors.deepPurple),
                     SizedBox(
                       width: 10,
                     ),
                     Text(
                       'Share',
-                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     ),
                   ],
                 )),
@@ -353,11 +406,11 @@ class _BuildingSpriteState extends State<BuildingSprite> {
               Chip(
                 avatar: Icon(
                   Icons.person,
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                 ),
                 backgroundColor: Colors.white10,
                 label: Text(
-                  "0/${widget.capacity}",
+                  "0/${widget.capacity.toStringAsFixed(0)} joined",
                 ),
               ),
               Text(
