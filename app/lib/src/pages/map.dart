@@ -5,6 +5,14 @@ import 'package:flutter/rendering.dart';
 import 'package:loci/src/pages/call.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+bool editMode = true;
+
+class MapArguments {
+  final bool editable;
+
+  MapArguments(this.editable);
+}
+
 class MapPage extends StatefulWidget {
   @override
   _MapPageState createState() => _MapPageState();
@@ -21,9 +29,12 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    final MapArguments args = ModalRoute.of(context).settings.arguments;
+    editMode = args != null ? args.editable : false;
+
     return Scaffold(
         appBar: AppBar(
-          title: Text('hello'),
+          title: Text('Map'),
         ),
         backgroundColor: Colors.black,
         body: InteractiveViewer(
@@ -49,12 +60,12 @@ class _MapPageState extends State<MapPage> {
 }
 
 class BuildingSprite extends StatefulWidget {
-  final double x;
-  final double y;
-  final String spritePath;
-  final String name;
-  final String description;
-  final int capacity;
+  double x;
+  double y;
+  String spritePath;
+  String name;
+  String description;
+  int capacity;
 
   BuildingSprite(
       {Key key,
@@ -92,26 +103,50 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                   builder: (BuildContext context) {
                     return StatefulBuilder(builder:
                         (BuildContext context, StateSetter setModalState) {
-                      return Container(
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
-                        height: 250,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildBuildingInfo(),
-                            Spacer(),
-                            buildButtonBar(setModalState)
-                          ],
-                        ),
-                      );
+                      return editMode
+                          ? buildEditSheet(setModalState)
+                          : buildInfoSheet(setModalState);
                     });
                   });
             },
             child: Image.asset('assets/images/${widget.spritePath}')));
+  }
+
+  Container buildInfoSheet(StateSetter setModalState) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      height: 250,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildBuildingInfo(),
+          Spacer(),
+          buildButtonBar(setModalState)
+        ],
+      ),
+    );
+  }
+
+  Container buildEditSheet(StateSetter setModalState) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      height: 250,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildBuildingInfo(),
+          Spacer(),
+          buildButtonBar(setModalState)
+        ],
+      ),
+    );
   }
 
   Widget buildButtonBar(StateSetter setModalState) {

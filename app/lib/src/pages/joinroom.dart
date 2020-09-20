@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loci/src/components/buttons.dart';
+import 'package:loci/src/pages/map.dart';
 
 class JoinRoomPage extends StatelessWidget {
   @override
@@ -19,7 +20,8 @@ class JoinRoomPage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: InputWidget(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/map');
+                  Navigator.of(context)
+                      .pushNamed('/map', arguments: MapArguments(false));
                 },
                 icon: Icons.search,
                 heroTag: 'JoinRoomFAB',

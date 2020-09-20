@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loci/src/components/buttons.dart';
+import 'package:loci/src/pages/map.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -40,9 +41,9 @@ class _CameraPageState extends State<CameraPage> {
               child: InputWidget(
                 icon: Icons.add_a_photo,
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/map');
+                  Navigator.of(context)
+                      .pushNamed('/map', arguments: MapArguments(true));
                 },
-                heroTag: 'CameraFAB',
               ),
             ),
           ],
