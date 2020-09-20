@@ -20,6 +20,8 @@ def measure_buildings(img_path):
 
     for i, c in zip(range(len(contours)), contours):
         M = cv2.moments(c)
+        if (len(M) < 4):
+            continue
 
         cX = int(M["m10"] / M["m00"])
         cY = int(M["m01"] / M["m00"])
