@@ -1,11 +1,11 @@
 import cv2
 import json
 
-# {'id': , 'location': , 'capacity': }
+# JSON Format: {'id': NUMBER, 'location': TUPLE, 'capacity': NUMBER}
 buildings = []
 
 # Read in image as grayscale
-image = cv2.imread('images/example7.png', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('example_images/example7.png', cv2.IMREAD_GRAYSCALE)
 
 # Convert to binary
 a = image.max()  
@@ -19,6 +19,6 @@ for i, c in zip(range(len(contours)), contours):
 
     cX = int(M["m10"] / M["m00"])
     cY = int(M["m01"] / M["m00"])
-    buildings.append({'id': i, 'location': (cX, cY)})
+    buildings.append({'id': i, 'location': (cX, cY)},'capacity': )
 
 return json.dumps(buildings)
