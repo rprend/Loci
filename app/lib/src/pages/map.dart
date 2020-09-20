@@ -65,7 +65,7 @@ class BuildingSprite extends StatefulWidget {
   String spritePath;
   String name;
   String description;
-  int capacity;
+  double capacity;
 
   BuildingSprite(
       {Key key,
@@ -84,6 +84,7 @@ class BuildingSprite extends StatefulWidget {
 class _BuildingSpriteState extends State<BuildingSprite> {
   Sprite sprite;
   bool favorited = false;
+  double _capacity = 8;
   @override
   void initState() {
     super.initState();
@@ -98,6 +99,7 @@ class _BuildingSpriteState extends State<BuildingSprite> {
         child: InkWell(
             onTap: () {
               showModalBottomSheet(
+                  isScrollControlled: true,
                   barrierColor: Colors.black12,
                   context: context,
                   builder: (BuildContext context) {
@@ -130,23 +132,134 @@ class _BuildingSpriteState extends State<BuildingSprite> {
     );
   }
 
-  Container buildEditSheet(StateSetter setModalState) {
-    return Container(
-      padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      height: 250,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildBuildingInfo(),
-          Spacer(),
-          buildButtonBar(setModalState)
-        ],
-      ),
-    );
+  Widget buildEditSheet(StateSetter setModalState) {
+    return Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Container(
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          height: 800,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  Spacer(),
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    onPressed: () {
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text('Saved ${widget.name}'),
+                      ));
+
+                      Navigator.pop(context);
+                    },
+                    color: Colors.deepPurple,
+                    child: Text(
+                      'Save',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            focusColor: Colors.black,
+                            hintText: widget.name,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 15, bottom: 11, top: 5, right: 15),
+                          ),
+                          initialValue: widget.name,
+                          maxLines: 2,
+                          onFieldSubmitted: (value) => {
+                            setState(() {
+                              widget.name = value;
+                            })
+                          },
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 16),
+                            Text(
+                              'Max capacity:',
+                              style: TextStyle(
+                                  fontSize: 14, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
+                        Slider(
+                          value: _capacity,
+                          min: 2,
+                          max: 12,
+                          divisions: 10,
+                          activeColor: Colors.deepPurple,
+                          inactiveColor: Colors.deepPurple,
+                          label: _capacity.round().toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              _capacity = value;
+                            });
+                          },
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 16),
+                            Text(
+                              'Description:',
+                              style: TextStyle(
+                                  fontSize: 14, fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            focusColor: Colors.black,
+                            hintText: 'description',
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 15, bottom: 11, top: 5, right: 15),
+                          ),
+                          maxLines: 8,
+                          initialValue: widget.description,
+                          onFieldSubmitted: (value) => {
+                            setState(() {
+                              widget.description = value;
+                            })
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Image.asset('assets/images/${widget.spritePath}'),
+                ]),
+              ),
+              Spacer(),
+            ],
+          ),
+        ));
   }
 
   Widget buildButtonBar(StateSetter setModalState) {
