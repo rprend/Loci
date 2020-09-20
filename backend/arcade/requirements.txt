@@ -1,0 +1,4 @@
+# Usage: pip install -r requirements.txt
+
+arcade==2.1
+dataclasses
