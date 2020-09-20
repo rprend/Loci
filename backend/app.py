@@ -32,6 +32,10 @@ def scan_image():
 
     return result
 
+@app.route('/test')
+def test():
+    return 'hhh'
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
 
