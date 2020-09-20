@@ -20,11 +20,13 @@ def measure_buildings(img_path):
 
     for i, c in zip(range(len(contours)), contours):
         M = cv2.moments(c)
-        if (len(M) < 4):
+        if ("m10" not in M or "m01" not in M or "m00" not in M):
             continue
 
         cX = int(M["m10"] / M["m00"])
         cY = int(M["m01"] / M["m00"])
-        buildings.append({'id': i, 'location': (cX, cY),'capacity': 8})
+        capacity = int(round(cv2.contourArea(c)/total_area * 100, -1))
+
+        buildings.append({'id': i, 'location': (cX, cY),'capacity': capacity})
 
     return json.dumps(buildings)
