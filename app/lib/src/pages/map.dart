@@ -299,7 +299,7 @@ sprite: BuildingSprite(name: "Temporary Name", capacity: 8, x: ${widget.x}, y: $
                           children: [
                             SizedBox(width: 16),
                             Text(
-                              'Max capacity:',
+                              'Max capacity: ${widget.capacity}',
                               style: TextStyle(
                                   fontSize: 14, fontStyle: FontStyle.italic),
                             ),
@@ -308,7 +308,7 @@ sprite: BuildingSprite(name: "Temporary Name", capacity: 8, x: ${widget.x}, y: $
                         Slider(
                           value: _capacity,
                           min: 2,
-                          max: 12,
+                          max: 200,
                           divisions: 10,
                           activeColor: Colors.deepPurple,
                           inactiveColor: Colors.deepPurple,

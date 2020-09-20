@@ -48,7 +48,7 @@ class _CameraPageState extends State<CameraPage> {
       Navigator.of(context).pushNamed('/map',
           arguments: MapArguments(
               editable: true,
-              assetBg: 'assets/maps/siebel.png',
+              assetBg: 'assets/maps/quad.png',
               sprites: sprites));
     } catch (e) {
       print(e);

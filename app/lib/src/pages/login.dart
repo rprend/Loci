@@ -19,6 +19,16 @@ class _LoginPageState extends State<LoginPage> {
     CameraPage(),
     JoinRoomPage(),
     MapCard(
+      imagePath: 'assets/screenshots/siebel.jpg',
+      buildings: siebelSprites,
+      mapPath: 'assets/maps/siebel.png',
+    ),
+    MapCard(
+      imagePath: 'assets/screenshots/snowy.jpg',
+      buildings: snowSprites,
+      mapPath: 'assets/maps/snowy.png',
+    ),
+    MapCard(
       imagePath: 'assets/screenshots/city.jpg',
       buildings: citySprites,
       mapPath: 'assets/maps/city.png',
@@ -28,26 +38,16 @@ class _LoginPageState extends State<LoginPage> {
       buildings: quadSprites,
       mapPath: 'assets/maps/quad.png',
     ),
-    MapCard(
-      imagePath: 'assets/screenshots/snowy.jpg',
-      buildings: snowSprites,
-      mapPath: 'assets/maps/snowy.png',
-    ),
-    MapCard(
-      imagePath: 'assets/screenshots/siebel.jpg',
-      buildings: siebelSprites,
-      mapPath: 'assets/maps/siebel.png',
-    ),
   ];
 
   final List<String> titles = [
     'Welcome to Loci',
     'Create a map',
     'Find a room',
+    'Locus: Siebel',
+    'Locus: Snowy',
     'Locus: City',
     'Locus: Quad',
-    'Locus: Snowy',
-    'Locus: Siebel'
   ];
 
   int index = 0;
