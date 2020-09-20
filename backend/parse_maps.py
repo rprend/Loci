@@ -18,6 +18,12 @@ def measure_buildings(img_path):
     # Find contours
     (contours, hierarchy) = cv2.findContours(im_bw, mode=cv2.RETR_EXTERNAL, method=cv2.CHAIN_APPROX_NONE)
 
+    '''
+    Calculate capacity as proportion of sizes of drawn quadrilateral. Normalized to add up to
+    100 ish
+    '''
+    total_area = sum([cv2.contourArea(c) for c in contours])
+
     for i, c in zip(range(len(contours)), contours):
         M = cv2.moments(c)
         if ("m10" not in M or "m01" not in M or "m00" not in M):
