@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loci/src/cards/MapCard.dart';
 import 'package:loci/src/components/buttons.dart';
 import 'package:loci/src/pages/camera.dart';
 import 'package:loci/src/pages/joinroom.dart';
@@ -16,12 +17,18 @@ class _LoginPageState extends State<LoginPage> {
     IntroCard(),
     CameraPage(),
     JoinRoomPage(),
+    MapCard(
+      imagePath: 'assets/screenshots/city.png',
+      buildings: [],
+      mapPath: 'assets/maps/city.png',
+    ),
   ];
 
   final List<String> titles = [
     'Welcome to Loci',
     'Create a map',
     'Find a room',
+    'Locus: City'
   ];
 
   int index = 0;
@@ -90,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                     itemBuilder: (BuildContext context, int index) {
                       return pages[index];
                     },
-                    itemCount: 3,
+                    itemCount: pages.length,
                     // itemWidth: MediaQuery.of(context).size.width - 30,
                     // layout: SwiperLayout.STACK,
                     // itemWidth: 350,
