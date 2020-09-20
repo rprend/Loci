@@ -33,6 +33,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.sort),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(
+              Icons.expand_more,
+              size: 40,
+            ),
+          )
+        ],
+        backgroundColor: Colors.purple,
+        elevation: 0,
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -48,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 80,
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -59,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 40,
                             fontWeight: FontWeight.w400,
                             color: Colors.white)),
-                    duration: Duration(milliseconds: 500),
+                    duration: Duration(milliseconds: 100),
                   ),
                 ),
                 Expanded(
