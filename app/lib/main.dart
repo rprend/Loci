@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loci/src/pages/camera.dart';
 import 'package:loci/src/pages/edit.dart';
 import 'package:loci/src/pages/joinroom.dart';
@@ -16,8 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+            primarySwatch: Colors.blue, textTheme: GoogleFonts.latoTextTheme()),
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),

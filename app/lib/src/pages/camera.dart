@@ -34,35 +34,13 @@ class _CameraPageState extends State<CameraPage> {
                 image: AssetImage('assets/images/town.jpg'))),
         child: Column(
           children: [
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Create your map',
-              style: TextStyle(fontSize: 40, color: Colors.white),
-            ),
             Spacer(flex: 2),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white),
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(10.0),
-                        ),
-                      ),
-                      focusColor: Colors.black,
-                      hintText: 'Map name'),
-                ),
+              child: InputWidget(
+                icon: Icons.add_a_photo,
+                onPressed: () {},
               ),
-            ),
-            LoginButton(
-              text: 'Take picture',
-              onPressed: getImage,
             ),
           ],
         ));

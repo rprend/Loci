@@ -32,3 +32,37 @@ class LoginButton extends StatelessWidget {
     );
   }
 }
+
+class InputWidget extends StatelessWidget {
+  final Function onPressed;
+  final IconData icon;
+  const InputWidget({Key key, this.onPressed, this.icon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30.0), color: Colors.white),
+        child: Row(children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                focusColor: Colors.black,
+                hintText: 'Map name',
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+            ),
+          ),
+          FloatingActionButton(
+              onPressed: onPressed,
+              child: Icon(icon),
+              elevation: 0,
+              backgroundColor: Colors.deepPurple)
+        ]));
+  }
+}
