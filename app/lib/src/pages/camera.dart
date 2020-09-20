@@ -39,7 +39,10 @@ class _CameraPageState extends State<CameraPage> {
               padding: const EdgeInsets.all(16.0),
               child: InputWidget(
                 icon: Icons.add_a_photo,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/map');
+                },
+                heroTag: 'CameraFAB',
               ),
             ),
           ],

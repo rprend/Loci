@@ -91,8 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                       return pages[index];
                     },
                     itemCount: 3,
-                    itemWidth: MediaQuery.of(context).size.width - 30,
-                    layout: SwiperLayout.STACK,
+                    // itemWidth: MediaQuery.of(context).size.width - 30,
+                    // layout: SwiperLayout.STACK,
+                    // itemWidth: 350,
                     scrollDirection: Axis.horizontal,
                     pagination:
                         SwiperPagination(builder: SwiperPagination.dots),
@@ -125,6 +126,7 @@ class IntroCard extends StatelessWidget {
         child: Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton(
+            heroTag: 'FABUseless',
             backgroundColor: Colors.deepPurple,
             child: Icon(Icons.keyboard_arrow_right),
           ),

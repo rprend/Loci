@@ -18,8 +18,11 @@ class JoinRoomPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: InputWidget(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/map');
+                },
                 icon: Icons.search,
+                heroTag: 'JoinRoomFAB',
               ),
             ),
           ],

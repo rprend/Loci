@@ -36,7 +36,9 @@ class LoginButton extends StatelessWidget {
 class InputWidget extends StatelessWidget {
   final Function onPressed;
   final IconData icon;
-  const InputWidget({Key key, this.onPressed, this.icon}) : super(key: key);
+  final String heroTag;
+  const InputWidget({Key key, this.onPressed, this.icon, this.heroTag})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,7 @@ class InputWidget extends StatelessWidget {
             ),
           ),
           FloatingActionButton(
+              heroTag: heroTag,
               onPressed: onPressed,
               child: Icon(icon),
               elevation: 0,
