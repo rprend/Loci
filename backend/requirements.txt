@@ -1,0 +1,7 @@
+# Usage: pip install -r requirements.txt
+
+Flask>=1.0.2
+tmxlib==0.1.0
+Werkzeug>=1
+arcade==2.1
+dataclasses
