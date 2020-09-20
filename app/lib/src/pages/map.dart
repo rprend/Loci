@@ -65,16 +65,14 @@ class _MapPageState extends State<MapPage> {
         appBar: AppBar(
           title: editMode ? Text('Edit map') : Text('Explore'),
           actions: [
-            editMode
-                ? IconButton(
-                    icon: Icon(Icons.done),
-                    onPressed: () {
-                      setState(() {
-                        editMode = false;
-                      });
-                    },
-                  )
-                : Container()
+            IconButton(
+              icon: editMode ? Icon(Icons.done) : Icon(Icons.edit),
+              onPressed: () {
+                setState(() {
+                  editMode = !editMode;
+                });
+              },
+            )
           ],
         ),
         floatingActionButton: editMode
@@ -148,11 +146,8 @@ class BuildingSprite extends StatefulWidget {
     return BuildingSprite(
       name: "Building ID: ${json['id'].toString()}",
       capacity: double.parse(json['capacity'].toString()),
-
       x: x > 1000 ? 150 : x,
       y: y > 1000 ? 150 : y,
-      // x: 100,
-      // y: 100,
       spritePath: 'assets/buildings/house-right.png',
     );
   }
@@ -169,6 +164,12 @@ class _BuildingSpriteState extends State<BuildingSprite> {
     super.initState();
   }
 
+  void printState() {
+    print('''
+sprite: BuildingSprite(name: "Temporary Name", capacity: 8, x: ${widget.x}, y: ${widget.y}, spritePath: '${widget.spritePath}',),
+    ''');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -177,6 +178,7 @@ class _BuildingSpriteState extends State<BuildingSprite> {
         child: GestureDetector(
           onPanUpdate: (details) {
             if (editMode) {
+              printState();
               setState(() {
                 widget.x += details.delta.dx;
                 widget.y += details.delta.dy;

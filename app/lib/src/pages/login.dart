@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loci/src/cards/MapCard.dart';
+import 'package:loci/src/cards/buildingsprite.dart';
 import 'package:loci/src/components/buttons.dart';
 import 'package:loci/src/pages/camera.dart';
 import 'package:loci/src/pages/joinroom.dart';
@@ -18,9 +19,24 @@ class _LoginPageState extends State<LoginPage> {
     CameraPage(),
     JoinRoomPage(),
     MapCard(
-      imagePath: 'assets/screenshots/city.png',
-      buildings: [],
+      imagePath: 'assets/screenshots/city.jpg',
+      buildings: citySprites,
       mapPath: 'assets/maps/city.png',
+    ),
+    MapCard(
+      imagePath: 'assets/screenshots/university.jpg',
+      buildings: quadSprites,
+      mapPath: 'assets/maps/quad.png',
+    ),
+    MapCard(
+      imagePath: 'assets/screenshots/snowy.jpg',
+      buildings: snowSprites,
+      mapPath: 'assets/maps/snowy.png',
+    ),
+    MapCard(
+      imagePath: 'assets/screenshots/siebel.jpg',
+      buildings: siebelSprites,
+      mapPath: 'assets/maps/siebel.png',
     ),
   ];
 
@@ -28,7 +44,10 @@ class _LoginPageState extends State<LoginPage> {
     'Welcome to Loci',
     'Create a map',
     'Find a room',
-    'Locus: City'
+    'Locus: City',
+    'Locus: Quad',
+    'Locus: Snowy',
+    'Locus: Siebel'
   ];
 
   int index = 0;

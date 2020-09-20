@@ -6,10 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loci/src/components/buttons.dart';
-import 'package:http/http.dart' as http;
 import 'package:loci/src/pages/map.dart';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -51,7 +48,7 @@ class _CameraPageState extends State<CameraPage> {
       Navigator.of(context).pushNamed('/map',
           arguments: MapArguments(
               editable: true,
-              assetBg: 'assets/maps/quad.png',
+              assetBg: 'assets/maps/siebel.png',
               sprites: sprites));
     } catch (e) {
       print(e);
