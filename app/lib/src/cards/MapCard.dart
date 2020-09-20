@@ -22,19 +22,17 @@ class MapCard extends StatelessWidget {
           children: [
             Spacer(flex: 2),
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: InputWidget(
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/map',
-                      arguments: MapArguments(
-                          editable: false,
-                          sprites: buildings,
-                          assetBg: mapPath));
-                },
-                icon: Icons.search,
-                heroTag: "FAB${imagePath}",
-              ),
-            ),
+                padding: const EdgeInsets.all(16.0),
+                child: LoginButton(
+                  text: 'Join map',
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/map',
+                        arguments: MapArguments(
+                            editable: false,
+                            sprites: buildings,
+                            assetBg: mapPath));
+                  },
+                )),
           ],
         ));
   }

@@ -89,6 +89,7 @@ class _MapPageState extends State<MapPage> {
             : Container(),
         backgroundColor: Colors.black,
         body: InteractiveViewer(
+            maxScale: 4,
             constrained: false,
             child: Container(
               height: 1000,
@@ -177,7 +178,13 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                   });
                 });
           },
-          child: Image.asset(widget.spritePath),
+          child: Container(
+            width: 100,
+            height: 100,
+            child: Image.asset(
+              widget.spritePath,
+            ),
+          ),
         ));
   }
 
@@ -458,7 +465,8 @@ class _BuildingSpriteState extends State<BuildingSprite> {
             ],
           ),
         ),
-        Image.asset(widget.spritePath),
+        Container(
+            width: 100, height: 150, child: Image.asset(widget.spritePath)),
       ]),
     );
   }
