@@ -32,7 +32,7 @@ class _CameraPageState extends State<CameraPage> {
             borderRadius: BorderRadius.circular(30),
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/town.jpg'))),
+                image: AssetImage('assets/images/createImage.jpg'))),
         child: Column(
           children: [
             Spacer(flex: 2),

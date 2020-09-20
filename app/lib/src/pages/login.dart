@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 20,
+                  height: 80,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -122,7 +122,7 @@ class IntroCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/town.jpg'))),
+                image: AssetImage('assets/images/lociImage.jpg'))),
         child: Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton(
