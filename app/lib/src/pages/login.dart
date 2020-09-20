@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loci/src/components/buttons.dart';
 import 'package:loci/src/pages/camera.dart';
 import 'package:loci/src/pages/joinroom.dart';
@@ -67,12 +68,15 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: AnimatedSwitcher(
-                    child: Text(titles[index],
-                        key: ValueKey(index),
-                        style: TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white)),
+                    child: Text(
+                      titles[index],
+                      key: ValueKey(index),
+                      style: GoogleFonts.lato(
+                          textStyle: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.w300,
+                              color: Colors.white)),
+                    ),
                     duration: Duration(milliseconds: 100),
                   ),
                 ),
