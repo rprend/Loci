@@ -7,6 +7,7 @@ import tmxlib
 import asyncio
 
 from arcadeRender import set_tmx, main_arcade
+from parse_maps import measure_buildings
 
 loop = asyncio.get_event_loop()
 app = flask.Flask(__name__)
@@ -14,7 +15,7 @@ app = flask.Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './'
 
 async def construct_from_image(image):
-    await asyncio.sleep(2)
+    await 
     return "Async return"
 
 @app.route('/scan', methods=['POST'])
