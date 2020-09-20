@@ -20,8 +20,11 @@ class JoinRoomPage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: InputWidget(
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed('/map', arguments: MapArguments(false));
+                  Navigator.of(context).pushNamed('/map',
+                      arguments: MapArguments(
+                          editable: false,
+                          sprites: [],
+                          assetBg: 'assets/maps/city.png'));
                 },
                 icon: Icons.search,
                 heroTag: 'JoinRoomFAB',

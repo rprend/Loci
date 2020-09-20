@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:loci/src/pages/call.dart';
@@ -7,11 +8,14 @@ import 'package:permission_handler/permission_handler.dart';
 
 bool editMode = true;
 bool checkEditMode = false;
+List<String> buildingImagePaths;
 
 class MapArguments with ChangeNotifier {
   bool editable;
+  String assetBg = 'assets/images/IsoMap.jpg';
+  List<BuildingSprite> sprites = [];
 
-  MapArguments(this.editable);
+  MapArguments({this.editable, this.assetBg, this.sprites});
 
   void update(bool val) {
     editable = val;
@@ -26,12 +30,14 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   List<BuildingSprite> sprites;
+  AssetImage map;
 
   @override
   void initState() {
     super.initState();
 
     checkEditMode = false;
+    _getBuildingAsset();
 
     sprites = [
       BuildingSprite(x: 500, y: 500),
@@ -47,7 +53,12 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     if (!checkEditMode) {
       final MapArguments args = ModalRoute.of(context).settings.arguments;
-      editMode = args != null ? args.editable : false;
+      if (args != null) {
+        editMode = args != null ? args.editable : false;
+        sprites = args.sprites;
+        map = AssetImage(args.assetBg);
+      }
+
       checkEditMode = true;
     }
     return Scaffold(
@@ -82,13 +93,29 @@ class _MapPageState extends State<MapPage> {
             child: Container(
               height: 1000,
               width: 1000,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/IsoMap.jpg'))),
+              decoration: BoxDecoration(image: DecorationImage(image: map)),
               child: Stack(
                 children: sprites,
               ),
             )));
+  }
+
+  Future _getBuildingAsset() async {
+    // >> To get paths you need these 2 lines
+    final manifestContent =
+        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+
+    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    // >> To get paths you need these 2 lines
+
+    final imagePaths = manifestMap.keys
+        .where((String key) => key.contains('assets/buildings'))
+        .where((String key) => key.contains('.png'))
+        .toList();
+
+    print(imagePaths);
+
+    buildingImagePaths = imagePaths;
   }
 }
 
@@ -100,36 +127,34 @@ class BuildingSprite extends StatefulWidget {
   String description;
   double capacity;
 
-  BuildingSprite(
-      {Key key,
-      this.x,
-      this.y,
-      this.spritePath = 'building.png',
-      this.name = 'Siebel Center for Computer Science',
-      this.capacity = 8,
-      this.description =
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'});
+  BuildingSprite({
+    Key key,
+    this.x,
+    this.y,
+    this.spritePath = 'assets/images/building.png',
+    this.name = 'Siebel Center for Computer Science',
+    this.capacity = 8,
+    this.description = 'Edit this description to something more useful!',
+  });
 
   @override
   _BuildingSpriteState createState() => _BuildingSpriteState();
 }
 
 class _BuildingSpriteState extends State<BuildingSprite> {
-  Sprite sprite;
   bool favorited = false;
   double _capacity = 8;
   @override
   void initState() {
     super.initState();
-    sprite = Sprite(widget.spritePath);
   }
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: widget.y,
-      left: widget.x,
-      child: GestureDetector(
+        top: widget.y,
+        left: widget.x,
+        child: GestureDetector(
           onPanUpdate: (details) {
             if (editMode) {
               setState(() {
@@ -152,8 +177,8 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                   });
                 });
           },
-          child: Image.asset('assets/images/${widget.spritePath}')),
-    );
+          child: Image.asset(widget.spritePath),
+        ));
   }
 
   Container buildInfoSheet(StateSetter setModalState) {
@@ -301,7 +326,19 @@ class _BuildingSpriteState extends State<BuildingSprite> {
                   // Image.asset('assets/images/${widget.spritePath}'),
                 ]),
               ),
-              Spacer(),
+              Expanded(
+                child: PageView.builder(
+                  itemCount: buildingImagePaths.length,
+                  onPageChanged: (int index) {
+                    setState(() {
+                      widget.spritePath = buildingImagePaths[index];
+                    });
+                  },
+                  itemBuilder: (BuildContext context, int itemIndex) {
+                    return Image.asset(buildingImagePaths[itemIndex]);
+                  },
+                ),
+              ),
             ],
           ),
         ));
@@ -421,7 +458,7 @@ class _BuildingSpriteState extends State<BuildingSprite> {
             ],
           ),
         ),
-        Image.asset('assets/images/${widget.spritePath}'),
+        Image.asset(widget.spritePath),
       ]),
     );
   }

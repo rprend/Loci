@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final List<String> titles = [
     'Welcome to Loci',
     'Create a map',
-    'Join a room',
+    'Find a room',
   ];
 
   int index = 0;

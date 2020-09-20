@@ -41,8 +41,11 @@ class _CameraPageState extends State<CameraPage> {
               child: InputWidget(
                 icon: Icons.add_a_photo,
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed('/map', arguments: MapArguments(true));
+                  Navigator.of(context).pushNamed('/map',
+                      arguments: MapArguments(
+                          editable: true,
+                          assetBg: 'assets/maps/quad.png',
+                          sprites: []));
                 },
               ),
             ),

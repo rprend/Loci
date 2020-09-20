@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primarySwatch: Colors.deepPurple,
             textTheme: GoogleFonts.latoTextTheme()),
-        initialRoute: '/map',
+        initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
           '/joinroom': (context) => JoinRoomPage(),
