@@ -1,17 +1,24 @@
-from flask import Flask
+import flask
+from flask import request
 import os
 import tmxlib
 
-app = Flask(__name__)
+import asyncio
 
+loop = asyncio.get_event_loop()
+app = flask.Flask(__name__)
 
-@app.route('/')
-def asset_default():
-    return "Default asset"
+async def construct_from_image(image):
+    await asyncio.sleep(2)
+    return "hell yeah bitch we goooood!"
 
-@app.route('/<id>')
-def asset_id(id):
-    return id
+@app.route('/scan', methods=['POST'])
+def scan_image():
+    image = request.json['img']
+    print(image)
+    result = loop.run_until_complete(construct_from_image(image))
+
+    return result
 
 if __name__ == '__main__':
     app.run()
