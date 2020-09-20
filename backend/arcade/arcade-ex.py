@@ -105,19 +105,6 @@ class MyGame(arcade.Window):
         exit()
 
 
-    def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed. """
-        pass
-
-    def on_key_release(self, key, modifiers):
-        """Called when the user releases a key. """
-        pass
-
-    def on_update(self, delta_time):
-        """ Movement and game logic """
-        pass
-
-
 def main():
     """ Main method """
     window = MyGame()
