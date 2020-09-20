@@ -138,6 +138,25 @@ class BuildingSprite extends StatefulWidget {
     this.description = 'Edit this description to something more useful!',
   });
 
+  factory BuildingSprite.fromJson(dynamic json) {
+    print('creating building');
+    print(json['location']);
+
+    var x = double.parse(json['location'][0].toString()) / 10 + 150;
+    var y = double.parse(json['location'][1].toString()) / 10 + 300;
+
+    return BuildingSprite(
+      name: "Building ID: ${json['id'].toString()}",
+      capacity: double.parse(json['capacity'].toString()),
+
+      x: x > 1000 ? 150 : x,
+      y: y > 1000 ? 150 : y,
+      // x: 100,
+      // y: 100,
+      spritePath: 'assets/buildings/house-right.png',
+    );
+  }
+
   @override
   _BuildingSpriteState createState() => _BuildingSpriteState();
 }

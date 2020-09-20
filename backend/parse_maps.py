@@ -26,7 +26,7 @@ def measure_buildings(img_path):
 
     for i, c in zip(range(len(contours)), contours):
         M = cv2.moments(c)
-        if ("m10" not in M or "m01" not in M or "m00" not in M):
+        if ("m10" not in M or "m01" not in M or "m00" not in M or M["m00"] == 0 or M["m00"] == 0):
             continue
 
         cX = int(M["m10"] / M["m00"])
